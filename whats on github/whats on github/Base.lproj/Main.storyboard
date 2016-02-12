@@ -117,6 +117,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Repos" id="Zdf-7t-Un8"/>
+                    <connections>
+                        <outlet property="searchBar" destination="hJC-cx-KPK" id="BmR-f0-MtA"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
