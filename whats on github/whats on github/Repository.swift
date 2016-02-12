@@ -10,5 +10,10 @@ import UIKit
 
 class Repository: NSObject
 {
-
+    var name: String
+    
+    init(name: String)
+    {
+        self.name = name
+    }
 }
