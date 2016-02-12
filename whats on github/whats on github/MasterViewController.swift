@@ -8,11 +8,11 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UITableViewController, UISearchBarDelegate {
 
     var detailViewController: DetailViewController? = nil
     var objects = [AnyObject]()
-
+    var repositoriesSerivce: GithubRepositoriesService = GithubRepositoriesService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +70,14 @@ class MasterViewController: UITableViewController {
         let object = objects[indexPath.row] as! NSDate
         cell.textLabel!.text = object.description
         return cell
+    }
+    
+    // MARK: - Search Bar Delegate
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String)
+    {
+        repositoriesSerivce.getRepositoryForLanguage(searchText) { (error, repositories) -> Void in
+            print(repositories)
+        }
     }
 
 }
