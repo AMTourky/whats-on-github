@@ -8,6 +8,12 @@
 
 import UIKit
 
-class Contributor: NSObject {
-
+class Contributor: NSObject
+{
+    var userName: String
+    
+    init(userName: String)
+    {
+        self.userName = userName
+    }
 }

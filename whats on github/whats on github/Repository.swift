@@ -11,9 +11,12 @@ import UIKit
 class Repository: NSObject
 {
     var name: String
+    var fullName: String
+    var repoDescription: String?
     
-    init(name: String)
+    init(name: String, fullName: String)
     {
         self.name = name
+        self.fullName = fullName
     }
 }

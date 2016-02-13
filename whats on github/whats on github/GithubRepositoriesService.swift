@@ -55,9 +55,10 @@ class GithubRepositoriesService: GithubAPIClient
         {
             for item in theItems
             {
-                if let theRepoName = item["name"] as? String
+                if let theRepoName = item["name"] as? String, theFullName = item["full_name"] as? String
                 {
-                    let repo = Repository(name: theRepoName)
+                    let repo = Repository(name: theRepoName, fullName: theFullName)
+                    repo.repoDescription = item["description"] as? String
                     repositories.append(repo)
                 }
             }

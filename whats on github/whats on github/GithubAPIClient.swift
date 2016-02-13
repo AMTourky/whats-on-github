@@ -13,7 +13,7 @@ class GithubAPIClient
 {
     var rootEndPoint: String = "https://api.github.com"
     
-    func getJSONOfResources(resources: String, usingParameters parameters: [String: String], andCallback callback: (error: NSError?, jsonResponse: AnyObject?, nextURL: String?) -> Void)
+    func getJSONOfResources(resources: String, usingParameters parameters: [String: String]? = nil, andCallback callback: (error: NSError?, jsonResponse: AnyObject?, nextURL: String?) -> Void)
     {
         var nextURL: String?
         Alamofire.request(.GET, self.rootEndPoint+resources, parameters: parameters)
