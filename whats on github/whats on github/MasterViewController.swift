@@ -18,7 +18,8 @@ class MasterViewController: UITableViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl?.addTarget(self, action: "searchForRepositories", forControlEvents: UIControlEvents.ValueChanged)
         if let split = self.splitViewController {
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
@@ -72,10 +73,20 @@ class MasterViewController: UITableViewController, UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar)
     {
+        self.searchForRepositories()
+    }
+    
+    func searchForRepositories()
+    {
+        self.refreshControl?.beginRefreshing()
+        self.tableView.setContentOffset(CGPointMake(0, -(self.refreshControl?.frame.size.height)!*2), animated: true)
         if let theSearchBar = self.searchBar, theSearchTerm = theSearchBar.text
         {
             repositoriesSerivce.getRepositoryForLanguage(theSearchTerm) { (error, repositories) -> Void in
                 print(repositories)
+                self.repositories.removeAll()
+                self.tableView.reloadData()
+                self.refreshControl?.endRefreshing()
                 guard let theRepositories = repositories where theRepositories.count > 0
                 else
                 {
