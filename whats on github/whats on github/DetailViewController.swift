@@ -14,6 +14,8 @@ class DetailViewController: UITableViewController {
     
     var contributorsSerivce: GithubContributorsService = GithubContributorsService()
     var contributors: [Contributor] = [Contributor]()
+    
+    var issuesSerivce: GithubIssuesService = GithubIssuesService()
     var issues: [Issue] = [Issue]()
 
     var repository: Repository? {
@@ -31,9 +33,6 @@ class DetailViewController: UITableViewController {
     
     func getTopContributors()
     {
-        var contributorsHeaderView = self.tableView.headerViewForSection(1)
-        let spinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-        contributorsHeaderView?.addSubview(spinner)
         if let theRepo = self.repository
         {
             contributorsSerivce.getContributorsOfRepository(theRepo) { (error, contributors) -> Void in
@@ -52,7 +51,20 @@ class DetailViewController: UITableViewController {
     
     func getRecentIssues()
     {
-        
+        if let theRepo = self.repository
+        {
+            issuesSerivce.getIssueOfRepository(theRepo) { (error, issues) -> Void in
+                if let theError = error
+                {
+                    print(theError)
+                }
+                else if let theIssues = issues
+                {
+                    self.issues = theIssues
+                    self.tableView.reloadData()
+                }
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -139,7 +151,7 @@ class DetailViewController: UITableViewController {
         }
         else
         {
-            cell.textLabel!.text = self.issues[indexPath.row].lol
+            cell.textLabel!.text = self.issues[indexPath.row].title
         }
         return cell
     }

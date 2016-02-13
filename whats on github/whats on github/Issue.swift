@@ -8,6 +8,13 @@
 
 import UIKit
 
-class Issue: NSObject {
+class Issue: NSObject
+{
+    var title: String
+    
+    init(title: String)
+    {
+        self.title = title
+    }
 
 }

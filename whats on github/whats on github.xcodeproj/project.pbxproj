@@ -22,6 +22,7 @@
 		EB536AB51C6E987300E3AAB1 /* Issue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB536AB41C6E987300E3AAB1 /* Issue.swift */; };
 		EB536AB71C6E9CD700E3AAB1 /* GithubRepositoriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB536AB61C6E9CD700E3AAB1 /* GithubRepositoriesService.swift */; };
 		EB53A2941C6F7FCF00EA4A3B /* GithubContributorsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB53A2931C6F7FCF00EA4A3B /* GithubContributorsService.swift */; };
+		EB53A2961C6F88D400EA4A3B /* GithubIssuesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB53A2951C6F88D400EA4A3B /* GithubIssuesService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		EB536AB41C6E987300E3AAB1 /* Issue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Issue.swift; sourceTree = "<group>"; };
 		EB536AB61C6E9CD700E3AAB1 /* GithubRepositoriesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubRepositoriesService.swift; sourceTree = "<group>"; };
 		EB53A2931C6F7FCF00EA4A3B /* GithubContributorsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubContributorsService.swift; sourceTree = "<group>"; };
+		EB53A2951C6F88D400EA4A3B /* GithubIssuesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubIssuesService.swift; sourceTree = "<group>"; };
 		ED12DB93CA3F9E6329DD450D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,6 +148,7 @@
 				EB536AAD1C6E951900E3AAB1 /* GithubAPIClient.swift */,
 				EB536AB61C6E9CD700E3AAB1 /* GithubRepositoriesService.swift */,
 				EB53A2931C6F7FCF00EA4A3B /* GithubContributorsService.swift */,
+				EB53A2951C6F88D400EA4A3B /* GithubIssuesService.swift */,
 			);
 			path = "whats on github";
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 			files = (
 				EB536AB71C6E9CD700E3AAB1 /* GithubRepositoriesService.swift in Sources */,
 				EB536AAE1C6E951900E3AAB1 /* GithubAPIClient.swift in Sources */,
+				EB53A2961C6F88D400EA4A3B /* GithubIssuesService.swift in Sources */,
 				EB536AB51C6E987300E3AAB1 /* Issue.swift in Sources */,
 				EB536AB31C6E986600E3AAB1 /* Contributor.swift in Sources */,
 				EB536A821C6E83A700E3AAB1 /* DetailViewController.swift in Sources */,
