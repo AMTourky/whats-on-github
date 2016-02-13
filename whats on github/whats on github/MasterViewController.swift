@@ -63,7 +63,10 @@ class MasterViewController: UITableViewController, UISearchBarDelegate {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-
+        if indexPath.row == self.repositories.count-2
+        {
+            self.searchForMoreRepositories()
+        }
         let repo = self.repositories[indexPath.row]
         cell.textLabel!.text = repo.name
         return cell
@@ -74,19 +77,19 @@ class MasterViewController: UITableViewController, UISearchBarDelegate {
     func searchBarSearchButtonClicked(searchBar: UISearchBar)
     {
         self.searchForRepositories()
+        self.searchBar?.resignFirstResponder()
     }
     
     func searchForRepositories()
     {
         self.refreshControl?.beginRefreshing()
-        self.tableView.setContentOffset(CGPointMake(0, -(self.refreshControl?.frame.size.height)!*2), animated: true)
         if let theSearchBar = self.searchBar, theSearchTerm = theSearchBar.text
         {
             repositoriesSerivce.getRepositoryForLanguage(theSearchTerm) { (error, repositories) -> Void in
                 print(repositories)
+                self.refreshControl?.endRefreshing()
                 self.repositories.removeAll()
                 self.tableView.reloadData()
-                self.refreshControl?.endRefreshing()
                 guard let theRepositories = repositories where theRepositories.count > 0
                 else
                 {
@@ -96,6 +99,45 @@ class MasterViewController: UITableViewController, UISearchBarDelegate {
                 self.tableView.reloadData()
             }
         }
+    }
+    
+    func searchForMoreRepositories()
+    {
+        self.displayLoadingMoreSpinner()
+        repositoriesSerivce.getMoreRepositories() { (error, repositories) -> Void in
+
+            self.hideLoadingMoreSpinner()
+            guard let theNewRepositories = repositories where theNewRepositories.count > 0
+            else
+            {
+                return
+            }
+            let currentReposCount = self.repositories.count
+            self.repositories.appendContentsOf(theNewRepositories)
+            var indicies = [NSIndexPath]()
+            for i in 0...theNewRepositories.count-1
+            {
+                indicies.append(NSIndexPath(forRow: i+currentReposCount, inSection: 0))
+            }
+            self.tableView.beginUpdates()
+            self.tableView.insertRowsAtIndexPaths(indicies, withRowAnimation: .Top)
+            self.tableView.endUpdates()
+            
+            self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: currentReposCount, inSection: 0), atScrollPosition: .Bottom, animated: true)
+            self.tableView.reloadData()
+        }
+    }
+    
+    func displayLoadingMoreSpinner()
+    {
+        let spinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        self.tableView.tableFooterView = spinner
+        spinner.startAnimating()
+    }
+    
+    func hideLoadingMoreSpinner()
+    {
+        self.tableView.tableFooterView = nil
     }
 }
 

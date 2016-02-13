@@ -7,14 +7,49 @@
 //
 import UIKit
 import Alamofire
+import WebLinking
 
 class GithubAPIClient
 {
-    var rootEndPoing: String = "https://api.github.com"
+    var rootEndPoint: String = "https://api.github.com"
     
-    func getJSONOfResources(resources: String, usingParameters parameters: [String: String], andCallback callback: (error: NSError?, jsonResponse: AnyObject?) -> Void)
+    func getJSONOfResources(resources: String, usingParameters parameters: [String: String], andCallback callback: (error: NSError?, jsonResponse: AnyObject?, nextURL: String?) -> Void)
     {
-        Alamofire.request(.GET, self.rootEndPoing+resources, parameters: parameters)
+        var nextURL: String?
+        Alamofire.request(.GET, self.rootEndPoint+resources, parameters: parameters)
+            .response { request, response, data, error in
+                if let link = response?.findLink(relation: "next")
+                {
+                    nextURL = link.uri
+                }
+            }
+            .responseJSON { response in
+                if let anError = response.result.error
+                {
+                    callback(error: anError, jsonResponse: nil, nextURL: nil)
+                }
+                else
+                {
+                    if let JSONResponse = response.result.value as? [String: AnyObject]
+                    {
+                        callback(error: nil, jsonResponse: JSONResponse, nextURL: nextURL)
+                    }
+                    else if let JSONResponse = response.result.value as? [[String: AnyObject]]
+                    {
+                        callback(error: nil, jsonResponse: JSONResponse, nextURL: nextURL)
+                    }
+                    else
+                    {
+                        let error = NSError(domain: "Github API", code: 1, userInfo: [NSLocalizedDescriptionKey: ""])
+                        callback(error: error, jsonResponse: nil, nextURL: nil)
+                    }
+                }
+        }
+    }
+    
+    func getJSONFromURL(url: String, andCallback callback: (error: NSError?, jsonResponse: AnyObject?) -> Void)
+    {
+        Alamofire.request(.GET, url)
             .responseJSON() { response in
                 if let anError = response.result.error
                 {
@@ -32,7 +67,7 @@ class GithubAPIClient
                     }
                     else
                     {
-                        let error = NSError(domain: "Github API", code: 1, userInfo: [NSLocalizedDescriptionKey: ""])
+                        let error = NSError(domain: "Github API", code: 2, userInfo: [NSLocalizedDescriptionKey: ""])
                         callback(error: error, jsonResponse: nil)
                     }
                 }

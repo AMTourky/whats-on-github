@@ -11,11 +11,12 @@ import UIKit
 class GithubRepositoriesService: GithubAPIClient
 {
     var repositoryResources: String = "/search/repositories"
+    var nextURL: String?
     
     func getRepositoryForLanguage(language: String, andCallback callback: (error: NSError?, repositories: [Repository]?) -> Void)
     {
         let searchReposParams = ["q": "language:"+language]
-        self.getJSONOfResources(self.repositoryResources, usingParameters: searchReposParams) { (error, jsonResponse) -> Void in
+        self.getJSONOfResources(self.repositoryResources, usingParameters: searchReposParams) { (error, jsonResponse, nextURL) -> Void in
             guard let theJSONResponse = jsonResponse as? [String: AnyObject]
             else
             {
@@ -23,11 +24,27 @@ class GithubRepositoriesService: GithubAPIClient
                 callback(error: error, repositories: nil)
                 return
             }
-            print(theJSONResponse)
-            
+            self.nextURL = nextURL
             let repos = self.exctractRepositoriesFrom(theJSONResponse)
             callback(error: nil, repositories: repos)
-            
+        }
+    }
+    
+    func getMoreRepositories(callback: (error: NSError?, repositories: [Repository]?) -> Void)
+    {
+        if let theNextURL = self.nextURL
+        {
+            self.getJSONFromURL(theNextURL, andCallback: { (error, jsonResponse) -> Void in
+                guard let theJSONResponse = jsonResponse as? [String: AnyObject]
+                else
+                {
+                    print(error)
+                    callback(error: error, repositories: nil)
+                    return
+                }
+                let repos = self.exctractRepositoriesFrom(theJSONResponse)
+                callback(error: nil, repositories: repos)
+            })
         }
     }
     
@@ -36,7 +53,6 @@ class GithubRepositoriesService: GithubAPIClient
         var repositories = [Repository]()
         if let theJSON = json, theItems = theJSON["items"] as? [[String: AnyObject]] where theItems.count > 0
         {
-            
             for item in theItems
             {
                 if let theRepoName = item["name"] as? String
