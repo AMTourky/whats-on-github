@@ -14,13 +14,17 @@ class DetailViewController: UITableViewController {
     
     var contributorsSerivce: GithubContributorsService = GithubContributorsService()
     var contributors: [Contributor] = [Contributor]()
+    var isLoadingContributors = false
     
     var issuesSerivce: GithubIssuesService = GithubIssuesService()
     var issues: [Issue] = [Issue]()
+    var isLoadingIssues = false
 
     var repository: Repository? {
         didSet {
             // Update the view.
+            self.isLoadingContributors = false
+            self.isLoadingIssues = false
             self.configureView()
         }
     }
@@ -33,9 +37,13 @@ class DetailViewController: UITableViewController {
     
     func getTopContributors()
     {
+        self.isLoadingContributors = true
+        self.tableView.reloadData()
         if let theRepo = self.repository
         {
             contributorsSerivce.getContributorsOfRepository(theRepo) { (error, contributors) -> Void in
+                self.isLoadingContributors = false
+                self.tableView.reloadData()
                 if let theError = error
                 {
                     print(theError)
@@ -51,9 +59,13 @@ class DetailViewController: UITableViewController {
     
     func getRecentIssues()
     {
+        self.isLoadingIssues = true
+        self.tableView.reloadData()
         if let theRepo = self.repository
         {
             issuesSerivce.getIssueOfRepository(theRepo) { (error, issues) -> Void in
+                self.isLoadingIssues = false
+                self.tableView.reloadData()
                 if let theError = error
                 {
                     print(theError)
@@ -126,6 +138,44 @@ class DetailViewController: UITableViewController {
         {
             return "Recent Issues"
         }
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+    {
+        
+        let bundle = NSBundle(forClass: self.dynamicType)
+        let nib = UINib(nibName: "DetailsSectionView", bundle: bundle)
+        let view = nib.instantiateWithOwner(self, options: nil)[0] as? DetailsSectionView
+        if section == 0
+        {
+            view?.label?.text = "Repository"
+            view?.spinner?.stopAnimating()
+        }
+        else if section == 1
+        {
+            view?.label?.text = "Top Contributors"
+            if self.isLoadingContributors
+            {
+                view?.spinner?.startAnimating()
+            }
+            else
+            {
+                view?.spinner?.stopAnimating()
+            }
+        }
+        else
+        {
+            view?.label?.text = "Recent Issues"
+            if self.isLoadingIssues
+            {
+                view?.spinner?.startAnimating()
+            }
+            else
+            {
+                view?.spinner?.stopAnimating()
+            }
+        }
+        return view
     }
     
     

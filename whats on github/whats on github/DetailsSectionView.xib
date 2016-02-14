@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="DetailsSectionView" customModule="whats_on_github" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0At-ZQ-VVR">
+                    <rect key="frame" x="8" y="2" width="344" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="a3g-ms-rlM">
+                    <rect key="frame" x="572" y="3" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" red="0.87712696335078533" green="0.87712696335078533" blue="0.87712696335078533" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="0At-ZQ-VVR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="2" id="1Ud-M5-7o2"/>
+                <constraint firstAttribute="trailing" secondItem="a3g-ms-rlM" secondAttribute="trailing" constant="8" id="EnO-MD-sNx"/>
+                <constraint firstItem="0At-ZQ-VVR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Tct-dw-r7h"/>
+                <constraint firstItem="a3g-ms-rlM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="3" id="sAp-Dg-9X8"/>
+            </constraints>
+            <connections>
+                <outlet property="label" destination="0At-ZQ-VVR" id="2j6-86-JDx"/>
+                <outlet property="spinner" destination="a3g-ms-rlM" id="FgZ-1B-k6a"/>
+            </connections>
+        </view>
+    </objects>
+</document>
