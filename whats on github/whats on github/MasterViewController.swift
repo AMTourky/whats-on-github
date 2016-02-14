@@ -24,6 +24,7 @@ class MasterViewController: UITableViewController, UISearchBarDelegate {
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
+        self.searchForRepositories()
     }
 
     override func viewWillAppear(animated: Bool) {
