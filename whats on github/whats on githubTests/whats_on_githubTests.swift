@@ -21,9 +21,25 @@ class whats_on_githubTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func testRepositoriesExtractor() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let repo1JSON = ["name":"repo1", "full_name": "user1/repo1", "description": "repo1 description"];
+        let repo2JSON = ["name":"repo2", "full_name": "user1/repo2", "description": "repo2 description"];
+        let repo3JSON = ["name":"repo3", "full_name": "user3/repo3", "description": "repo3 description"];
+        let threeReposJSON: [String: AnyObject] =
+        [   "items":
+                [
+                    repo1JSON,
+                    repo2JSON,
+                    repo3JSON
+                ]
+        ]
+        let reposService = GithubRepositoriesService()
+        let threeRepos = reposService.exctractRepositoriesFrom(threeReposJSON)
+        XCTAssert(threeRepos.count == 3)
+        XCTAssertEqual(threeRepos.first?.name, repo1JSON["name"])
+        XCTAssertEqual(threeRepos.last?.repoDescription, repo3JSON["description"])
     }
     
     func testPerformanceExample() {
