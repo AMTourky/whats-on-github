@@ -32,7 +32,22 @@ class GithubAPIClient
                 {
                     if let JSONResponse = response.result.value as? [String: AnyObject]
                     {
+                        if let theMessage = JSONResponse["message"] as? String
+                        {
+                            if var topController = UIApplication.sharedApplication().keyWindow?.rootViewController {
+                                
+                                let alert = UIAlertController(title: "Github Message!", message: theMessage, preferredStyle: UIAlertControllerStyle.Alert)
+                                alert.addAction(UIAlertAction(title: "ok", style: UIAlertActionStyle.Default, handler: nil))
+                                while let presentedViewController = topController.presentedViewController {
+                                    topController = presentedViewController
+                                }
+                                
+                                topController.presentViewController(alert, animated: true, completion: nil)
+                                // topController should now be your topmost view controller
+                            }
+                        }
                         callback(error: nil, jsonResponse: JSONResponse, nextURL: nextURL)
+                        
                     }
                     else if let JSONResponse = response.result.value as? [[String: AnyObject]]
                     {
